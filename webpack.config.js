@@ -45,7 +45,7 @@ export default {
       process: require.resolve("./src/shims/process.cjs"),
       console: require.resolve("./src/shims/console.cjs"),
       os: require.resolve("./src/shims/os.cjs"),
-      child_process: false,
+      child_process: require.resolve("./src/shims/child_process.cjs"),
       pnpapi: false,
       crypto: require.resolve("crypto-browserify"),
       util: require.resolve("npm-in-browser-shim-util"),
@@ -67,9 +67,7 @@ export default {
       tls: false,
       dns: false,
       net: false,
-    },
-    fallback: {
-      bluebird: false,
+      bluebird: require.resolve("./src/shims/bluebird.cjs"),
     },
     extensionAlias: {
       ".js": [".ts", ".tsx", ".js"],

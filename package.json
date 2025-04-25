@@ -51,5 +51,8 @@
   },
   "overrides": {
     "pako": "2.1.0"
+  },
+  "dependencies": {
+    "tsx": "^4.19.3"
   }
 }
