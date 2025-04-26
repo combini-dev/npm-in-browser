@@ -7,6 +7,7 @@ fs.writeFileSync(
   filePath,
   `export const runNpmCli = (NPM_IN_BROWSER$args, NPM_IN_BROWSER$options) => new Promise((NPM_IN_BROWSER$resolve, NPM_IN_BROWSER$reject) => {
   const NPM_IN_BROWSER$FS = NPM_IN_BROWSER$options.fs;
+  const NPM_IN_BROWSER$console = NPM_IN_BROWSER$options.console;
   const NPM_IN_BROWSER$STDOUT = (chunk) => {
     NPM_IN_BROWSER$options.stdout?.(chunk)
   };
@@ -28,5 +29,5 @@ fs.writeFileSync(
   };
   ${code}
 });
-`,
+`
 );

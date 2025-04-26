@@ -1,5 +1,4 @@
 const { hrtime } = require("../hrtime.js");
-const log = globalThis.console.log;
 
 const createfakeStream = (onWrite) => {
   return {
@@ -50,7 +49,6 @@ const process = {
     return processEventEmitter.off(...args);
   },
   emit(...args) {
-    log("emit", args);
     if (NPM_IN_BROWSER$options.timings) {
       if (args[0] === "time") {
         NPM_IN_BROWSER$options.timings.start(args[1]);
