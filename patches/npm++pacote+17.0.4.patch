@@ -1,0 +1,14 @@
+diff --git a/node_modules/npm/node_modules/pacote/lib/fetcher.js b/node_modules/npm/node_modules/pacote/lib/fetcher.js
+index f961a45..d2c50cd 100644
+--- a/node_modules/npm/node_modules/pacote/lib/fetcher.js
++++ b/node_modules/npm/node_modules/pacote/lib/fetcher.js
+@@ -436,6 +436,9 @@ class FetcherBase {
+         if (/Link$/.test(entry.type)) {
+           return false
+         }
++        if (name.endsWith(".map") || entry.path.includes("./") || entry.path.includes("/test/") || entry.path.includes("/docs/") || entry.path.includes("/examples/")) {
++          return false
++        }
+         entry.mode = this[_entryMode](entry.path, entry.mode, entry.type)
+         // this replicates the npm pack behavior where .gitignore files
+         // are treated like .npmignore files, but only if a .npmignore
