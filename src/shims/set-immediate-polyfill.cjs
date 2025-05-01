@@ -98,65 +98,9 @@ function runIfPresent(handle) {
   }
 }
 
-function canUsePostMessage() {
-  // The test against `importScripts` prevents this implementation from being installed inside a web worker,
-  // where `global.postMessage` means something completely different and can't be used for this purpose.
-  if (global.postMessage && !global.importScripts) {
-    var postMessageIsAsynchronous = true;
-    var oldOnMessage = global.onmessage;
-    global.onmessage = function () {
-      postMessageIsAsynchronous = false;
-    };
-    global.postMessage("", "*");
-    global.onmessage = oldOnMessage;
-    return postMessageIsAsynchronous;
-  }
-}
-
-function installPostMessageImplementation() {
-  // Installs an event handler on `global` for the `message` event: see
-  // * https://developer.mozilla.org/en/DOM/window.postMessage
-  // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-
-  var messagePrefix = "setImmediate$" + Math.random() + "$";
-  var onGlobalMessage = function (event) {
-    if (
-      event.source === global &&
-      typeof event.data === "string" &&
-      event.data.indexOf(messagePrefix) === 0
-    ) {
-      runIfPresent(+event.data.slice(messagePrefix.length));
-    }
-  };
-
-  global.addEventListener("message", onGlobalMessage, false);
-
-  registerImmediate = function (handle) {
-    global.postMessage(messagePrefix + handle, "*");
-  };
-}
-
-function installMessageChannelImplementation() {
-  var channel = new MessageChannel();
-  channel.port1.onmessage = function (event) {
-    var handle = event.data;
-    runIfPresent(handle);
-  };
-
-  registerImmediate = function (handle) {
-    channel.port2.postMessage(handle);
-  };
-}
-
-if (canUsePostMessage()) {
-  // For non-IE10 modern browsers
-  installPostMessageImplementation();
-} else if (global.MessageChannel) {
-  // For web workers, where supported
-  installMessageChannelImplementation();
-} else {
-  throw new Error("setImmediate polyfill unsupported");
-}
+registerImmediate = function (handle) {
+  Promise.resolve().then(() => runIfPresent(handle));
+};
 
 module.exports.setImmediate = setImmediate;
 module.exports.clearImmediate = clearImmediate;

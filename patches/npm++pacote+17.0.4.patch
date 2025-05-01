@@ -6,7 +6,7 @@ index f961a45..d2c50cd 100644
          if (/Link$/.test(entry.type)) {
            return false
          }
-+        if (name.endsWith(".map") || entry.path.includes("./") || entry.path.includes("/test/") || entry.path.includes("/docs/") || entry.path.includes("/examples/")) {
++        if (name.endsWith(".map") || entry.path.includes("./") || entry.path.includes("/test/") || entry.path.includes("/docs/")) {
 +          return false
 +        }
          entry.mode = this[_entryMode](entry.path, entry.mode, entry.type)
